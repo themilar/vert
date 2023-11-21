@@ -16,7 +16,7 @@ var description = map[string]Temperature{"Kelvin": {Value: 0, Unit: "Kelvin", Sy
 	"Rakine":    {0, "Rakine", "Ra"}}
 
 // methods
-func (t Temperature) ConvertToKelvin() (Temperature, error) {
+func (t Temperature) ToKelvin() (Temperature, error) {
 	var k float64
 	switch t.Unit {
 	case "Celsius":
@@ -33,7 +33,7 @@ func (t Temperature) ConvertToKelvin() (Temperature, error) {
 	}
 	return Temperature{k, "Kelvin", "K"}, nil
 }
-func (t Temperature) convertToCelsius() (float64, error) {
+func (t Temperature) ToCelsius() (Temperature, error) {
 	var c float64
 	switch t.Unit {
 	case "Kelvin":
@@ -46,11 +46,11 @@ func (t Temperature) convertToCelsius() (float64, error) {
 		c = t.Value
 	}
 	if c < -273.15 {
-		return 0, errors.New("temperature can't go below absolute zero")
+		return Temperature{}, errors.New("temperature can't go below absolute zero")
 	}
-	return c, nil
+	return Temperature{c, "Celsius", "C"}, nil
 }
-func (t Temperature) convertToFarenheit() (float64, error) {
+func (t Temperature) ToFarenheit() (Temperature, error) {
 	var f float64
 	switch t.Unit {
 	case "Celsius":
@@ -62,10 +62,13 @@ func (t Temperature) convertToFarenheit() (float64, error) {
 	default:
 		f = t.Value
 	}
-	return f, nil
+	if f < -459.67 {
+		return Temperature{}, errors.New("temperature can't go below absolute zero")
+	}
+	return Temperature{f, "Farenheit", "F"}, nil
 
 }
-func (t Temperature) convertToRakine() (float64, error) {
+func (t Temperature) ToRakine() (Temperature, error) {
 	var r float64
 	switch t.Unit {
 	case "Celsius":
@@ -78,15 +81,15 @@ func (t Temperature) convertToRakine() (float64, error) {
 		r = t.Value
 	}
 	if r < 0 {
-		return r, errors.New("temperature can't go below absolute zero")
+		return Temperature{}, errors.New("temperature can't go below absolute zero")
 	}
-	return r, nil
+	return Temperature{r, "Rakine", "Ra"}, nil
 
 }
 
 func main() {
 	var boiling = Temperature{Value: 0, Unit: "Kelvin", Symbol: "Ra"}
 	fmt.Println(boiling)
-	fmt.Println(boiling.convertToFarenheit())
+	fmt.Println(boiling.ToFarenheit())
 	fmt.Println(description)
 }

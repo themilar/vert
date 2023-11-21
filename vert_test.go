@@ -9,7 +9,7 @@ import (
 func TestToKelvin(t *testing.T) {
 	v := vert.Temperature{100, "Celsius", "C"}
 	exp := 373.15
-	res, _ := v.ConvertToKelvin()
+	res, _ := v.ToKelvin()
 	if res.Value != exp {
 		// t.Errorf("Expected %d, got %d instead.\n", exp, res)
 		t.Error("wrong")
