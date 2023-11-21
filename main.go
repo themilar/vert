@@ -38,6 +38,10 @@ func (t Temperature) convertToCelsius() (float64, error) {
 	switch t.Unit {
 	case "Kelvin":
 		c = t.Value - 273.15
+	case "Farenheit":
+		c = (t.Value - 32) * 5 / 9
+	case "Rakine":
+		c = (t.Value - 491.67) * 5 / 9
 	default:
 		c = t.Value
 	}
@@ -46,8 +50,26 @@ func (t Temperature) convertToCelsius() (float64, error) {
 	}
 	return c, nil
 }
-func (t Temperature) convertToFarenheit() (float64, error) {}
+func (t Temperature) convertToFarenheit() (float64, error) {
+	var f float64
+	switch t.Unit {
+	case "Celsius":
+		f = t.Value*9/5 + 32
+	default:
+		f = t.Value
+	}
+	return f, nil
+
+}
 func (t Temperature) convertToRakine() (float64, error) {
+	var r float64
+	switch t.Unit {
+	case "Celsius":
+		r = t.Value*9/5 + 491.67
+	default:
+		r = t.Value
+	}
+	return r, nil
 
 }
 
