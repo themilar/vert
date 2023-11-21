@@ -16,22 +16,22 @@ var description = map[string]Temperature{"Kelvin": {Value: 0, Unit: "Kelvin", Sy
 	"Rakine":    {Symbol: "Ra"}}
 
 // methods
-func (t Temperature) convertToKelvin() (float64, error) {
-	var k Temperature
+func (t Temperature) convertToKelvin() (Temperature, error) {
+	var k float64
 	switch t.Unit {
 	case "Celsius":
-		k.Value = t.Value + 273.15
+		k = t.Value + 273.15
 	case "Farenheit":
-		k.Value = (t.Value-32)*5/9 + 273.5
+		k = (t.Value-32)*5/9 + 273.5
 	case "Rakine", "rankine":
-		k.Value = t.Value * 5 / 9
+		k = t.Value * 5 / 9
 	default:
-		k.Value = t.Value
+		k = t.Value
 	}
-	if k.Value < 0 {
-		return 0, errors.New("temperature can't go below absolute zero")
+	if k < 0 {
+		return Temperature{}, errors.New("temperature can't go below absolute zero")
 	}
-	return k.Value, nil
+	return Temperature{k, "Kelvin", "K"}, nil
 }
 func (t Temperature) convertToCelsius() (float64, error) {
 	var c float64
