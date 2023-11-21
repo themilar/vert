@@ -1,4 +1,4 @@
-package main
+package vert
 
 import (
 	"errors"
@@ -12,11 +12,11 @@ type Temperature struct {
 
 var description = map[string]Temperature{"Kelvin": {Value: 0, Unit: "Kelvin", Symbol: "K"},
 	"Celsius":   {-273.15, "Celsius", "C"},
-	"Farenheit": {Symbol: "F"},
-	"Rakine":    {Symbol: "Ra"}}
+	"Farenheit": {-459.67, "Farenheit", "F"},
+	"Rakine":    {0, "Rakine", "Ra"}}
 
 // methods
-func (t Temperature) convertToKelvin() (Temperature, error) {
+func (t Temperature) ConvertToKelvin() (Temperature, error) {
 	var k float64
 	switch t.Unit {
 	case "Celsius":
@@ -85,8 +85,8 @@ func (t Temperature) convertToRakine() (float64, error) {
 }
 
 func main() {
-	var boiling = Temperature{Value: 100, Unit: "Rakine", Symbol: "C"}
+	var boiling = Temperature{Value: 0, Unit: "Kelvin", Symbol: "Ra"}
 	fmt.Println(boiling)
-	fmt.Println(boiling.convertToKelvin())
+	fmt.Println(boiling.convertToFarenheit())
 	fmt.Println(description)
 }
