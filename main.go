@@ -55,6 +55,10 @@ func (t Temperature) convertToFarenheit() (float64, error) {
 	switch t.Unit {
 	case "Celsius":
 		f = t.Value*9/5 + 32
+	case "Kelvin":
+		f = (t.Value-273.15)*9/5 + 32
+	case "Rakine":
+		f = t.Value - 459.67
 	default:
 		f = t.Value
 	}
@@ -66,8 +70,15 @@ func (t Temperature) convertToRakine() (float64, error) {
 	switch t.Unit {
 	case "Celsius":
 		r = t.Value*9/5 + 491.67
+	case "Kelvin":
+		r = t.Value * 1.8
+	case "Farenheit":
+		r = t.Value + 459.67
 	default:
 		r = t.Value
+	}
+	if r < 0 {
+		return r, errors.New("temperature can't go below absolute zero")
 	}
 	return r, nil
 
