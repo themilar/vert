@@ -22,7 +22,7 @@ func (t Temperature) ToKelvin() (Temperature, error) {
 	case "Celsius":
 		k = t.Value + 273.15
 	case "Farenheit":
-		k = (t.Value-32)*5/9 + 273.5
+		k = (t.Value-32)*5/9 + 273.15
 	case "Rakine", "rankine":
 		k = t.Value * 5 / 9
 	default:
@@ -88,8 +88,11 @@ func (t Temperature) ToRakine() (Temperature, error) {
 }
 
 func main() {
-	var boiling = Temperature{Value: 0, Unit: "Kelvin", Symbol: "Ra"}
-	fmt.Println(boiling)
-	fmt.Println(boiling.ToFarenheit())
+	var boiling = Temperature{Value: 373.15, Unit: "Kelvin", Symbol: "Ra"}
+	var boiling2 = Temperature{Value: 100, Unit: "Celsius", Symbol: "C"}
+	var boiling3 = Temperature{671.67, "Rakine", "Ra"}
+	fmt.Println(boiling.ToRakine())
+	fmt.Println(boiling2.ToRakine())
+	fmt.Println(boiling3.ToCelsius())
 	fmt.Println(description)
 }
