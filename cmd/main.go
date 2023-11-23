@@ -30,14 +30,21 @@ func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 }
 func main() {
 	// unit := flag.String("unit", "kelvin", "set the unit to convert your temperatures into")
-	var kelvin bool
-	flag.BoolVar(&kelvin, "kelvin", true, "convert the temperatures provided to kelvin")
-	flag.BoolVar(&kelvin, "k", true, "convert the temperatures provided to kelvin")
+	var kelvin, celsius, farenheit, rakine bool
+	flag.BoolVar(&kelvin, "kelvin", false, "convert the temperatures provided to kelvin")
+	flag.BoolVar(&kelvin, "k", false, "convert the temperatures provided to kelvin")
+	flag.BoolVar(&celsius, "celsius", false, "convert the temperatures provided to celsius")
+	flag.BoolVar(&celsius, "c", false, "convert the temperatures provided to celsius")
+	flag.BoolVar(&farenheit, "farenheit", false, "convert the temperatures provided to farenheit")
+	flag.BoolVar(&farenheit, "f", false, "convert the temperatures provided to farenheit")
+	flag.BoolVar(&rakine, "rakine", false, "convert the temperatures provided to rakine")
+	flag.BoolVar(&rakine, "r", false, "convert the temperatures provided to rakine")
 	flag.Parse()
 	if len(os.Args) == 1 {
 		fmt.Println("insufficient arguments")
 	} else {
-		if kelvin {
+		switch {
+		case kelvin:
 			for _, x := range os.Args[2:] {
 				// x[len(x)-1] this returns the unicode
 				value, unit := x[:len(x)-1], x[len(x)-1:]
@@ -50,6 +57,40 @@ func main() {
 				fmt.Println(value, unit, t.Value)
 
 			}
+		case celsius:
+			for _, x := range os.Args[2:] {
+				value, unit := x[:len(x)-1], x[len(x)-1:]
+				t, err := convertInputToTemp(value, unit)
+				if err != nil {
+					fmt.Fprint(os.Stderr, err)
+				}
+				t, _ = t.ToCelsius()
+				fmt.Println(value, unit, t.Value)
+
+			}
+		case farenheit:
+			for _, x := range os.Args[2:] {
+				value, unit := x[:len(x)-1], x[len(x)-1:]
+				t, err := convertInputToTemp(value, unit)
+				if err != nil {
+					fmt.Fprint(os.Stderr, err)
+				}
+				t, _ = t.ToFarenheit()
+				fmt.Println(value, unit, t.Value)
+
+			}
+		case rakine:
+			for _, x := range os.Args[2:] {
+				value, unit := x[:len(x)-1], x[len(x)-1:]
+				t, err := convertInputToTemp(value, unit)
+				if err != nil {
+					fmt.Fprint(os.Stderr, err)
+				}
+				t, _ = t.ToRakine()
+				fmt.Println(value, unit, t.Value)
+
+			}
+
 		}
 	}
 }
