@@ -23,13 +23,13 @@ func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 	if v, err := strconv.ParseFloat(v, 64); err == nil {
 		switch u {
 		case "k":
-			return vert.Temperature{v, "Kelvin", "K"}, nil
+			return vert.Temperature{Value: v, Unit: "Kelvin"}, nil
 		case "c":
-			return vert.Temperature{v, "Celsius", "C"}, nil
+			return vert.Temperature{Value: v, Unit: "Celsius"}, nil
 		case "f":
-			return vert.Temperature{v, "Farenheit", "F"}, nil
+			return vert.Temperature{Value: v, Unit: "Farenheit"}, nil
 		case "r":
-			return vert.Temperature{v, "Rakine", "R"}, nil
+			return vert.Temperature{Value: v, Unit: "Rakine"}, nil
 		default:
 			// working with pointers might have made this more convenient=> return nil instead of an empty struct
 			return vert.Temperature{}, errors.New("invalid unit")
