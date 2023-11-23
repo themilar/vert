@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -9,16 +10,17 @@ import (
 	"github.com/themilar/vert"
 )
 
-func convertSToT(v float64, u string) vert.Temperature {
+func convertInputToTemp(v float64, u string) (vert.Temperature, error) {
 	switch u {
 	case "k":
-		return vert.Temperature{v, "Kelvin", "K"}
+		return vert.Temperature{v, "Kelvin", "K"}, nil
 	case "c":
-		return vert.Temperature{v, "Celsius", "C"}
+		return vert.Temperature{v, "Celsius", "C"}, nil
 	case "f":
-		return vert.Temperature{v, "Farenheit", "F"}
+		return vert.Temperature{v, "Farenheit", "F"}, nil
 	default:
-		return vert.Temperature{}
+		// working with pointers might have made this more convenient=> return nil instead of an empty struct
+		return vert.Temperature{}, errors.New("invalid unit")
 	}
 }
 func main() {
@@ -34,7 +36,11 @@ func main() {
 				value, unit := x[:len(x)-1], x[len(x)-1:]
 				// vert.Description[unit].Value=value
 				if v, err := strconv.ParseFloat(value, 64); err == nil {
-					t, _ := convertSToT(v, unit).ToKelvin()
+					t, err := convertInputToTemp(v, unit)
+					if err != nil {
+						fmt.Fprint(os.Stderr, err)
+					}
+					t, _ = t.ToKelvin()
 					fmt.Println(value, unit, t.Value)
 				}
 			}
