@@ -37,11 +37,17 @@ func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 	}
 	return vert.Temperature{}, errors.New("invalid float value")
 }
+func createFlags(n bool) {
+	strb := strconv.FormatBool(n)
+	flag.BoolVar(&n, strb, false, "convert the temperatures provided to "+strb)
+	// flag.BoolVar(&n, string(strb[0]), false, "convert the temperatures provided to "+strb)
+}
 func main() {
 	// unit := flag.String("unit", "kelvin", "set the unit to convert your temperatures into")
 	var kelvin, celsius, farenheit, rakine bool
-	flag.BoolVar(&kelvin, "kelvin", false, "convert the temperatures provided to kelvin")
-	flag.BoolVar(&kelvin, "k", false, "convert the temperatures provided to kelvin")
+	createFlags(kelvin)
+	// flag.BoolVar(&kelvin, "kelvin", false, "convert the temperatures provided to kelvin")
+	// flag.BoolVar(&kelvin, "k", false, "convert the temperatures provided to kelvin")
 	flag.BoolVar(&celsius, "celsius", false, "convert the temperatures provided to celsius")
 	flag.BoolVar(&celsius, "c", false, "convert the temperatures provided to celsius")
 	flag.BoolVar(&farenheit, "farenheit", false, "convert the temperatures provided to farenheit")
