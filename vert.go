@@ -1,18 +1,11 @@
 package vert
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type Temperature struct {
 	Value        float64
 	Unit, Symbol string
 }
-
-var DescriptionBaseMap = map[string]Temperature{"k": {Value: 0, Unit: "Kelvin", Symbol: "K"},
-	"c": {-273.15, "Celsius", "C"},
-	"f": {-459.67, "Farenheit", "F"},
-	"r": {0, "Rankine", "Ra"}}
 
 // methods
 func (t Temperature) ToKelvin() (Temperature, error) {
@@ -84,14 +77,4 @@ func (t Temperature) ToRankine() (Temperature, error) {
 	}
 	return Temperature{r, "Rankine", "\u00B0Ra"}, nil
 
-}
-
-func main() {
-	var boiling = Temperature{Value: 373.15, Unit: "Kelvin", Symbol: "Ra"}
-	var boiling2 = Temperature{Value: 100, Unit: "Celsius", Symbol: "C"}
-	var boiling3 = Temperature{671.67, "Rankine", "Ra"}
-	fmt.Println(boiling.ToRankine())
-	fmt.Println(boiling2.ToRankine())
-	fmt.Println(boiling3.ToCelsius())
-	// fmt.Println(description)
 }
