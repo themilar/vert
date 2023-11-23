@@ -10,24 +10,25 @@ import (
 	"github.com/themilar/vert"
 )
 
-func convertInputToTemp(v string, u string) (vert.Temperature, error) {
+func convertInputToTemp(v string, u string) (*vert.Temperature, error) {
 	if v, err := strconv.ParseFloat(v, 64); err == nil {
 		switch u {
 		case "k":
-			return vert.Temperature{v, "Kelvin", "K"}, nil
+			return &vert.Temperature{Value: v, Unit: "Kelvin", Symbol: "K"}, nil
 		case "c":
-			return vert.Temperature{v, "Celsius", "C"}, nil
+			return &vert.Temperature{Value: v, Unit: "Celsius", Symbol: "C"}, nil
 		case "f":
-			return vert.Temperature{v, "Farenheit", "F"}, nil
+			return &vert.Temperature{Value: v, Unit: "Farenheit", Symbol: "F"}, nil
 		case "r":
-			return vert.Temperature{v, "Rakine", "R"}, nil
+			return &vert.Temperature{Value: v, Unit: "Rankine", Symbol: "R"}, nil
 		default:
 			// working with pointers might have made this more convenient=> return nil instead of an empty struct
-			return vert.Temperature{}, errors.New("invalid unit")
+			return nil, errors.New("invalid unit " + strconv.FormatFloat(v, 'f', -1, 64))
 		}
 	}
-	return vert.Temperature{}, errors.New("invalid float value")
+	return &vert.Temperature{}, errors.New("invalid float value")
 }
+
 func main() {
 	// unit := flag.String("unit", "kelvin", "set the unit to convert your temperatures into")
 	var kelvin bool
@@ -44,10 +45,14 @@ func main() {
 				// vert.Description[unit].Value=value
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
-					fmt.Fprint(os.Stderr, err)
+					fmt.Fprintln(os.Stderr, err)
+				} else {
+					if err := t.ToKelvin(); err == nil {
+						fmt.Println(value, unit, t.Value)
+					} else {
+						fmt.Fprintln(os.Stderr, err)
+					}
 				}
-				t, _ = t.ToKelvin()
-				fmt.Println(value, unit, t.Value)
 
 			}
 		}

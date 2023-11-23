@@ -13,25 +13,25 @@ type Temperature struct {
 var description = map[string]Temperature{"Kelvin": {Value: 0, Unit: "Kelvin", Symbol: "K"},
 	"Celsius":   {-273.15, "Celsius", "C"},
 	"Farenheit": {-459.67, "Farenheit", "F"},
-	"Rakine":    {0, "Rakine", "Ra"}}
+	"Rankine":   {0, "Rankine", "Ra"}}
 
 // methods
-func (t Temperature) ToKelvin() (Temperature, error) {
-	var k float64
+func (t *Temperature) ToKelvin() error {
+
 	switch t.Unit {
 	case "Celsius":
-		k = t.Value + 273.15
+		t.Value = t.Value + 273.15
 	case "Farenheit":
-		k = (t.Value-32)*5/9 + 273.15
-	case "Rakine", "rankine":
-		k = t.Value * 5 / 9
-	default:
-		k = t.Value
+		t.Value = (t.Value-32)*5/9 + 273.15
+	case "Rankine", "rankine":
+		t.Value = t.Value * 5 / 9
 	}
-	if k < 0 {
-		return Temperature{}, errors.New("temperature can't go below absolute zero")
+	if t.Value < 0 {
+		return errors.New("temperature can't go below absolute zero")
 	}
-	return Temperature{k, "Kelvin", "K"}, nil
+	t.Unit = "Kelvin"
+	t.Symbol = "K"
+	return nil
 }
 func (t Temperature) ToCelsius() (Temperature, error) {
 	var c float64
@@ -40,7 +40,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 		c = t.Value - 273.15
 	case "Farenheit":
 		c = (t.Value - 32) * 5 / 9
-	case "Rakine":
+	case "Rankine":
 		c = (t.Value - 491.67) * 5 / 9
 	default:
 		c = t.Value
@@ -57,7 +57,7 @@ func (t Temperature) ToFarenheit() (Temperature, error) {
 		f = t.Value*9/5 + 32
 	case "Kelvin":
 		f = (t.Value-273.15)*9/5 + 32
-	case "Rakine":
+	case "Rankine":
 		f = t.Value - 459.67
 	default:
 		f = t.Value
@@ -68,7 +68,7 @@ func (t Temperature) ToFarenheit() (Temperature, error) {
 	return Temperature{f, "Farenheit", "F"}, nil
 
 }
-func (t Temperature) ToRakine() (Temperature, error) {
+func (t Temperature) ToRankine() (Temperature, error) {
 	var r float64
 	switch t.Unit {
 	case "Celsius":
@@ -83,16 +83,17 @@ func (t Temperature) ToRakine() (Temperature, error) {
 	if r < 0 {
 		return Temperature{}, errors.New("temperature can't go below absolute zero")
 	}
-	return Temperature{r, "Rakine", "Ra"}, nil
+	return Temperature{r, "Rankine", "Ra"}, nil
 
 }
 
 func main() {
-	var boiling = Temperature{Value: 373.15, Unit: "Kelvin", Symbol: "Ra"}
+	var boiling = Temperature{Value: 373.15, Unit: "Rankine", Symbol: "Ra"}
 	var boiling2 = Temperature{Value: 100, Unit: "Celsius", Symbol: "C"}
-	var boiling3 = Temperature{671.67, "Rakine", "Ra"}
-	fmt.Println(boiling.ToRakine())
-	fmt.Println(boiling2.ToRakine())
+	var boiling3 = Temperature{671.67, "Rankine", "Ra"}
+	fmt.Println(boiling.ToKelvin())
+	fmt.Println(boiling)
+	fmt.Println(boiling2.ToRankine())
 	fmt.Println(boiling3.ToCelsius())
 	fmt.Println(description)
 }
