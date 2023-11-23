@@ -11,7 +11,7 @@ var boilingArray = [4]vert.Temperature{
 	{373.15, "Kelvin", "K"},
 	{100, "Celsius", "C"},
 	{212, "Farenheit", "F"},
-	{671.67, "Rakine", "Ra"},
+	{671.67, "Rankine", "Ra"},
 }
 
 func TestToKelvin(t *testing.T) {
@@ -55,11 +55,11 @@ func TestToFarenheit(t *testing.T) {
 		}
 	}
 }
-func TestToRakine(t *testing.T) {
+func TestToRankine(t *testing.T) {
 
 	for i := 0; i < len(boilingArray); i++ {
 		exp := boilingArray[3]
-		res, _ := boilingArray[i].ToRakine()
+		res, _ := boilingArray[i].ToRankine()
 		fmt.Print(res)
 		if res != exp {
 			t.Error("wrong")

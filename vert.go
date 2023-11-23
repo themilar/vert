@@ -13,7 +13,7 @@ type Temperature struct {
 var DescriptionBaseMap = map[string]Temperature{"k": {Value: 0, Unit: "Kelvin", Symbol: "K"},
 	"c": {-273.15, "Celsius", "C"},
 	"f": {-459.67, "Farenheit", "F"},
-	"r": {0, "Rakine", "Ra"}}
+	"r": {0, "Rankine", "Ra"}}
 
 // methods
 func (t Temperature) ToKelvin() (Temperature, error) {
@@ -23,7 +23,7 @@ func (t Temperature) ToKelvin() (Temperature, error) {
 		k = t.Value + 273.15
 	case "Farenheit":
 		k = (t.Value-32)*5/9 + 273.15
-	case "Rakine", "rankine":
+	case "Rankine", "rankine":
 		k = t.Value * 5 / 9
 	default:
 		k = t.Value
@@ -40,7 +40,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 		c = t.Value - 273.15
 	case "Farenheit":
 		c = (t.Value - 32) * 5 / 9
-	case "Rakine":
+	case "Rankine":
 		c = (t.Value - 491.67) * 5 / 9
 	default:
 		c = t.Value
@@ -57,7 +57,7 @@ func (t Temperature) ToFarenheit() (Temperature, error) {
 		f = t.Value*9/5 + 32
 	case "Kelvin":
 		f = (t.Value-273.15)*9/5 + 32
-	case "Rakine":
+	case "Rankine":
 		f = t.Value - 459.67
 	default:
 		f = t.Value
@@ -68,7 +68,7 @@ func (t Temperature) ToFarenheit() (Temperature, error) {
 	return Temperature{f, "Farenheit", "\u00B0F"}, nil
 
 }
-func (t Temperature) ToRakine() (Temperature, error) {
+func (t Temperature) ToRankine() (Temperature, error) {
 	var r float64
 	switch t.Unit {
 	case "Celsius":
@@ -83,16 +83,16 @@ func (t Temperature) ToRakine() (Temperature, error) {
 	if r < 0 {
 		return Temperature{}, errors.New("temperature can't go below absolute zero")
 	}
-	return Temperature{r, "Rakine", "\u00B0Ra"}, nil
+	return Temperature{r, "Rankine", "\u00B0Ra"}, nil
 
 }
 
 func main() {
 	var boiling = Temperature{Value: 373.15, Unit: "Kelvin", Symbol: "Ra"}
 	var boiling2 = Temperature{Value: 100, Unit: "Celsius", Symbol: "C"}
-	var boiling3 = Temperature{671.67, "Rakine", "Ra"}
-	fmt.Println(boiling.ToRakine())
-	fmt.Println(boiling2.ToRakine())
+	var boiling3 = Temperature{671.67, "Rankine", "Ra"}
+	fmt.Println(boiling.ToRankine())
+	fmt.Println(boiling2.ToRankine())
 	fmt.Println(boiling3.ToCelsius())
 	// fmt.Println(description)
 }
