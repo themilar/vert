@@ -10,6 +10,15 @@ import (
 	"github.com/themilar/vert"
 )
 
+const usage = `
+Usage of vert command line tool:
+  -c, --celsius		convert the temperatures provided to celsius
+  -f, --farenheit	convert the temperatures provided to farenheit
+  -k, --kelvin		convert the temperatures provided to kelvin
+  -r, --rakine		convert the temperatures provided to rakine
+  
+`
+
 func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 	if v, err := strconv.ParseFloat(v, 64); err == nil {
 		switch u {
@@ -39,9 +48,11 @@ func main() {
 	flag.BoolVar(&farenheit, "f", false, "convert the temperatures provided to farenheit")
 	flag.BoolVar(&rakine, "rakine", false, "convert the temperatures provided to rakine")
 	flag.BoolVar(&rakine, "r", false, "convert the temperatures provided to rakine")
+	flag.Usage = func() { fmt.Print(usage) }
 	flag.Parse()
 	if len(os.Args) == 1 {
 		fmt.Println("insufficient arguments")
+		fmt.Print(usage)
 	} else {
 		switch {
 		case kelvin:
