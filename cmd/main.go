@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -31,7 +30,7 @@ func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 			return vert.Temperature{Value: v, Unit: "Rankine"}, nil
 		default:
 			// working with pointers might have made this more convenient=> return nil instead of an empty struct
-			return vert.Temperature{}, errors.New("invalid unit: " + u)
+			return vert.Temperature{}, fmt.Errorf("invalid unit: %v", v)
 		}
 	}
 	return vert.Temperature{}, fmt.Errorf("invalid float value: %v", v)
