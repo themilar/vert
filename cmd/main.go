@@ -34,7 +34,7 @@ func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 			return vert.Temperature{}, errors.New("invalid unit: " + u)
 		}
 	}
-	return vert.Temperature{}, errors.New("invalid float value")
+	return vert.Temperature{}, fmt.Errorf("invalid float value: %v", v)
 }
 
 func main() {
@@ -82,9 +82,14 @@ func main() {
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
 					fmt.Fprint(os.Stderr, err)
+				} else {
+					t, err = t.ToCelsius()
+					if err != nil {
+						fmt.Fprintln(os.Stderr, err)
+					} else {
+						fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
+					}
 				}
-				t, _ = t.ToCelsius()
-				fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
 
 			}
 		case farenheit:
@@ -98,8 +103,9 @@ func main() {
 				t, err = t.ToFarenheit()
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
+				} else {
+					fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
 				}
-				fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
 
 			}
 		case rankine:
@@ -109,9 +115,14 @@ func main() {
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
 					fmt.Fprint(os.Stderr, err)
+				} else {
+					t, err = t.ToRankine()
+					if err != nil {
+						fmt.Fprintln(os.Stderr, err)
+					} else {
+						fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
+					}
 				}
-				t, _ = t.ToRankine()
-				fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
 
 			}
 

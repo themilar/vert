@@ -1,7 +1,6 @@
 package vert
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -46,7 +45,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 		c = t.Value
 	}
 	if c < -273.15 {
-		return Temperature{}, errors.New(fmt.Sprintf("%v: temperature can't go below absolute zero", c))
+		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", c)
 	}
 	return Temperature{c, "Celsius", "\u00B0C"}, nil
 }
@@ -63,7 +62,7 @@ func (t Temperature) ToFarenheit() (Temperature, error) {
 		f = t.Value
 	}
 	if f < -459.67 {
-		return Temperature{}, errors.New("temperature can't go below absolute zero")
+		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", f)
 	}
 	return Temperature{f, "Farenheit", "\u00B0F"}, nil
 
@@ -81,7 +80,7 @@ func (t Temperature) ToRankine() (Temperature, error) {
 		r = t.Value
 	}
 	if r < 0 {
-		return Temperature{}, errors.New("temperature can't go below absolute zero")
+		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", r)
 	}
 	return Temperature{r, "Rankine", "\u00B0Ra"}, nil
 
