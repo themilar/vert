@@ -16,7 +16,6 @@ Usage of vert command line tool:
   -f, --farenheit	convert the temperatures provided to farenheit
   -k, --kelvin		convert the temperatures provided to kelvin
   -r, --rankine		convert the temperatures provided to rankine
-  
 `
 
 func convertInputToTemp(v string, u string) (vert.Temperature, error) {
@@ -32,7 +31,7 @@ func convertInputToTemp(v string, u string) (vert.Temperature, error) {
 			return vert.Temperature{Value: v, Unit: "Rankine"}, nil
 		default:
 			// working with pointers might have made this more convenient=> return nil instead of an empty struct
-			return vert.Temperature{}, errors.New("invalid unit")
+			return vert.Temperature{}, errors.New("invalid unit: " + u)
 		}
 	}
 	return vert.Temperature{}, errors.New("invalid float value")
@@ -65,10 +64,15 @@ func main() {
 				// vert.Description[unit].Value=value
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
-					fmt.Fprint(os.Stderr, err)
+					fmt.Fprintln(os.Stderr, err)
+				} else {
+					t, err = t.ToKelvin()
+					if err != nil {
+						fmt.Fprintln(os.Stderr, err)
+					} else {
+						fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
+					}
 				}
-				t, _ = t.ToKelvin()
-				fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
 
 			}
 		case celsius:
@@ -91,7 +95,10 @@ func main() {
 				if err != nil {
 					fmt.Fprint(os.Stderr, err)
 				}
-				t, _ = t.ToFarenheit()
+				t, err = t.ToFarenheit()
+				if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+				}
 				fmt.Println(value, unit, fmt.Sprintf("%v%v", t.Value, t.Symbol))
 
 			}

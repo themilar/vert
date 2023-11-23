@@ -29,7 +29,7 @@ func (t Temperature) ToKelvin() (Temperature, error) {
 		k = t.Value
 	}
 	if k < 0 {
-		return Temperature{}, errors.New("temperature can't go below absolute zero")
+		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", k)
 	}
 	return Temperature{k, "Kelvin", "K"}, nil
 }
@@ -46,7 +46,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 		c = t.Value
 	}
 	if c < -273.15 {
-		return Temperature{}, errors.New("temperature can't go below absolute zero")
+		return Temperature{}, errors.New(fmt.Sprintf("%v: temperature can't go below absolute zero", c))
 	}
 	return Temperature{c, "Celsius", "\u00B0C"}, nil
 }
