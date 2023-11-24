@@ -74,13 +74,14 @@ func main() {
 				}
 
 			}
+			fmt.Println("\xE2\x9C\x94 conversion complete")
 		case celsius:
 			fmt.Println("Temperatures in celsius")
 			for _, x := range os.Args[2:] {
 				value, unit := x[:len(x)-1], x[len(x)-1:]
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
-					fmt.Fprint(os.Stderr, err)
+					fmt.Fprintln(os.Stderr, err)
 				} else {
 					t, err = t.ToCelsius()
 					if err != nil {
@@ -91,13 +92,14 @@ func main() {
 				}
 
 			}
+			fmt.Println("\xE2\x9C\x94 conversion complete")
 		case farenheit:
 			fmt.Println("Temperatures in farenheit")
 			for _, x := range os.Args[2:] {
 				value, unit := x[:len(x)-1], x[len(x)-1:]
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
-					fmt.Fprint(os.Stderr, err)
+					fmt.Fprintln(os.Stderr, err)
 				}
 				t, err = t.ToFarenheit()
 				if err != nil {
@@ -107,13 +109,14 @@ func main() {
 				}
 
 			}
+			fmt.Println("\xE2\x9C\x94 conversion complete")
 		case rankine:
 			fmt.Println("Temperatures in rankine")
 			for _, x := range os.Args[2:] {
 				value, unit := x[:len(x)-1], x[len(x)-1:]
 				t, err := convertInputToTemp(value, unit)
 				if err != nil {
-					fmt.Fprint(os.Stderr, err)
+					fmt.Fprintln(os.Stderr, err)
 				} else {
 					t, err = t.ToRankine()
 					if err != nil {
@@ -124,7 +127,7 @@ func main() {
 				}
 
 			}
-
+			fmt.Println("\xE2\x9C\x94 conversion complete")
 		}
 	}
 }
