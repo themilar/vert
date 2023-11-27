@@ -13,7 +13,7 @@ func (t Temperature) ToKelvin() (Temperature, error) {
 	switch t.Unit {
 	case "Celsius":
 		k = t.Value + 273.15
-	case "Farenheit":
+	case "Fahrenheit":
 		k = (t.Value-32)*5/9 + 273.15
 	case "Rankine", "rankine":
 		k = t.Value * 5 / 9
@@ -30,7 +30,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 	switch t.Unit {
 	case "Kelvin":
 		c = t.Value - 273.15
-	case "Farenheit":
+	case "Fahrenheit":
 		c = (t.Value - 32) * 5 / 9
 	case "Rankine":
 		c = (t.Value - 491.67) * 5 / 9
@@ -42,7 +42,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 	}
 	return Temperature{c, "Celsius", "\u00B0C"}, nil
 }
-func (t Temperature) ToFarenheit() (Temperature, error) {
+func (t Temperature) ToFahrenheit() (Temperature, error) {
 	var f float64
 	switch t.Unit {
 	case "Celsius":
@@ -57,7 +57,7 @@ func (t Temperature) ToFarenheit() (Temperature, error) {
 	if f < -459.67 {
 		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", f)
 	}
-	return Temperature{f, "Farenheit", "\u00B0F"}, nil
+	return Temperature{f, "Fahrenheit", "\u00B0F"}, nil
 
 }
 func (t Temperature) ToRankine() (Temperature, error) {
@@ -67,7 +67,7 @@ func (t Temperature) ToRankine() (Temperature, error) {
 		r = t.Value*9/5 + 491.67
 	case "Kelvin":
 		r = t.Value * 1.8
-	case "Farenheit":
+	case "Fahrenheit":
 		r = t.Value + 459.67
 	default:
 		r = t.Value
