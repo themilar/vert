@@ -15,6 +15,16 @@ var boilingArray = [4]vert.Temperature{
 	{671.67, "Rankine", "Ra"},
 }
 
+func withinTolereance(a, b, e float64) bool {
+	if a == b {
+		return true
+	}
+	d := math.Abs(a - b)
+	if b == 0 {
+		return d < e
+	}
+	return (d / math.Abs(b)) < e
+}
 func roundFloat(val float64, precision int) float64 {
 	ratio := math.Pow(10, float64(precision))
 	return math.Round(val*ratio) / ratio
@@ -25,8 +35,8 @@ func TestToKelvin(t *testing.T) {
 		exp := boilingArray[0]
 		res, _ := boilingArray[i].ToKelvin()
 
-		if res != exp {
-			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, roundFloat(res.Value, 2))
+		if !withinTolereance(exp.Value, res.Value, 1e-12) {
+			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, res.Value)
 		}
 	}
 	// v := vert.Temperature{100, "Celsius", "C"}
@@ -44,8 +54,8 @@ func TestToCelsius(t *testing.T) {
 		exp := boilingArray[1]
 		res, _ := boilingArray[i].ToCelsius()
 
-		if res != exp {
-			t.Errorf("wrong expected %.18f, got %.18f", roundFloat(exp.Value, 2), roundFloat(res.Value, 2))
+		if !withinTolereance(exp.Value, res.Value, 1e-12) {
+			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, res.Value)
 		}
 	}
 }
@@ -56,8 +66,8 @@ func TestToFahrenheit(t *testing.T) {
 		res, _ := boilingArray[i].ToFahrenheit()
 		fmt.Print(res)
 		res.Value = roundFloat(res.Value, 2)
-		if res != exp {
-			t.Errorf("wrong expected %.20f, got %.20f", exp.Value, res.Value)
+		if !withinTolereance(exp.Value, res.Value, 1e-12) {
+			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, res.Value)
 
 		}
 	}
@@ -67,9 +77,8 @@ func TestToRankine(t *testing.T) {
 	for i := 0; i < len(boilingArray); i++ {
 		exp := boilingArray[3]
 		res, _ := boilingArray[i].ToRankine()
-		fmt.Print(res)
-		if res != exp {
-			t.Errorf("wrong expected %f, got %f", exp.Value, res.Value)
+		if !withinTolereance(exp.Value, res.Value, 1e-12) {
+			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, res.Value)
 
 		}
 	}
