@@ -1,7 +1,6 @@
 package vert_test
 
 import (
-	"fmt"
 	"math"
 	"testing"
 
@@ -64,7 +63,6 @@ func TestToFahrenheit(t *testing.T) {
 	for i := 0; i < len(boilingArray); i++ {
 		exp := boilingArray[2]
 		res, _ := boilingArray[i].ToFahrenheit()
-		fmt.Print(res)
 		res.Value = roundFloat(res.Value, 2)
 		if !withinTolereance(exp.Value, res.Value, 1e-12) {
 			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, res.Value)
