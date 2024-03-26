@@ -53,7 +53,7 @@ func TestToCelsius(t *testing.T) {
 		exp := boilingArray[1]
 		res, _ := boilingArray[i].ToCelsius()
 
-		if !withinTolereance(exp.Value, res.Value, 1e-12) {
+		if res != exp {
 			t.Errorf("wrong expected %.18f, got %.18f", exp.Value, res.Value)
 		}
 	}

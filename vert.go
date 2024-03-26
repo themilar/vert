@@ -6,6 +6,11 @@ type Temperature struct {
 	Value        float64
 	Unit, Symbol string
 }
+type AbsoluteZeroError float64
+
+func (f AbsoluteZeroError) Error() string {
+	return fmt.Sprintf("%g: temperature can't go below absolute zero", f)
+}
 
 // methods
 func (t Temperature) ToKelvin() (Temperature, error) {
@@ -21,7 +26,8 @@ func (t Temperature) ToKelvin() (Temperature, error) {
 		k = t.Value
 	}
 	if k < 0 {
-		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", k)
+		// var ae AbsoluteZeroError = k
+		return Temperature{}, AbsoluteZeroError(k)
 	}
 	return Temperature{k, "Kelvin", "K"}, nil
 }
@@ -38,7 +44,7 @@ func (t Temperature) ToCelsius() (Temperature, error) {
 		c = t.Value
 	}
 	if c < -273.15 {
-		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", c)
+		return Temperature{}, AbsoluteZeroError(c)
 	}
 	return Temperature{c, "Celsius", "\u00B0C"}, nil
 }
@@ -55,7 +61,7 @@ func (t Temperature) ToFahrenheit() (Temperature, error) {
 		f = t.Value
 	}
 	if f < -459.67 {
-		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", f)
+		return Temperature{}, AbsoluteZeroError(f)
 	}
 	return Temperature{f, "Fahrenheit", "\u00B0F"}, nil
 
@@ -73,7 +79,7 @@ func (t Temperature) ToRankine() (Temperature, error) {
 		r = t.Value
 	}
 	if r < 0 {
-		return Temperature{}, fmt.Errorf("%v: temperature can't go below absolute zero", r)
+		return Temperature{}, AbsoluteZeroError(r)
 	}
 	return Temperature{r, "Rankine", "\u00B0Ra"}, nil
 
